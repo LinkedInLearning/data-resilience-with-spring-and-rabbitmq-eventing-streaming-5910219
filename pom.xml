@@ -11,6 +11,7 @@
     <name>tanzu-rabbitmq-event-streaming-showcase-parent</name>
 
     <modules>
+        <module>applications/account-balance-service</module>
     </modules>
     <build>
         <pluginManagement>
