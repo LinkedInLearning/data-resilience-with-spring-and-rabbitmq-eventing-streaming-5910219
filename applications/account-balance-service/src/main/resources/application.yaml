@@ -1,0 +1,29 @@
+spring:
+  application:
+      name: account-balance
+  cloud:
+    function:
+      definition: readBalanceFunction;paymentConsumer
+    stream:
+      http:
+        GET: readBalanceFunction
+        POST: paymentConsumer
+      rabbit:
+        default:
+          requiredGroups: true
+          dlqQuorum:
+            enabled:  true
+          quorum.enabled: true
+          autoBindDlq: true
+          prefetch: 10000
+      bindings:
+        readBalanceFunction-in-0:
+          destination: readBalance
+          group: ${spring.application.name}
+        readBalanceFunction-out-0:
+          destination: balance
+        paymentConsumer-in-0:
+          destination: payment
+          group: ${spring.application.name}
+      binder:
+        connection-name-prefix: "account-balance"
