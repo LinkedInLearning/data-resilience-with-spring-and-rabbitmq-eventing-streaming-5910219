@@ -1,0 +1,1 @@
+docker run -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --rm --network valkey -p 6379:6379  bitnami/valkey:7.2.5

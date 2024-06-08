@@ -1,0 +1,1 @@
+docker run -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --network valkey -p 6379:6379  -v $PWD/deployments/local/runtime/valkey/persistence:/bitnami/valkey/data bitnami/valkey:7.2.5

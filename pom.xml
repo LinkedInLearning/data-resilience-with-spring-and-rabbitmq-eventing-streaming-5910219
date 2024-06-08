@@ -12,6 +12,7 @@
 
     <modules>
         <module>applications/account-balance-service</module>
+        <module>applications/payment-service</module>
     </modules>
     <build>
         <pluginManagement>

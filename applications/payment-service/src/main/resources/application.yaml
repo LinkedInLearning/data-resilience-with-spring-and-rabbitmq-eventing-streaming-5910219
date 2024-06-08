@@ -1,0 +1,18 @@
+server:
+  port: 8081
+spring:
+  application:
+      name: payment-service
+  cloud:
+    function:
+      definition: makePaymentConsumer
+      web:
+        path: /functions
+    #
+    stream:
+      http:
+        POST: makePaymentConsumer
+  rabbitmq:
+    username: rabbit
+    payment:
+      destination: payment
