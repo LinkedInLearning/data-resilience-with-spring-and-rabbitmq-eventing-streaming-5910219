@@ -12,17 +12,15 @@ spring:
         bindings:
           readBalanceFunction-in-0:
             consumer:
-              quorum.enabled: true
               prefetch: 10000
-              autoBindDlq: true
+#              autoBindDlq: true
 #              dlqQuorum:
 #                enabled: true
 #              republishToDlq: true
           paymentConsumer-in-0:
             consumer:
-              quorum.enabled: true
               prefetch: 10000
-              autoBindDlq: true
+#              autoBindDlq: true
 #              dlqQuorum:
 #                enabled: true
 #              republishToDlq: true

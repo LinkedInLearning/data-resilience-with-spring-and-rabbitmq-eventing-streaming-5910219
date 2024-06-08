@@ -1,0 +1,11 @@
+spring:
+  cloud:
+    stream:
+      rabbit:
+        bindings:
+          readBalanceFunction-in-0:
+            consumer:
+              containerType: stream
+          paymentConsumer-in-0:
+            consumer:
+              containerType: stream
