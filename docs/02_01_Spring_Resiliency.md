@@ -78,3 +78,73 @@ curl -X 'GET' \
   'http://localhost:8080/readBalanceFunction/001' \
   -H 'accept: application/json'
 ```
+
+
+# ValKey
+
+```shell
+mkdir -p $PWD/deployments/local/runtime/valkey/persistence
+```
+
+```shell
+docker network create valkey
+```
+
+```shell
+docker run -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --network valkey -p 6379:6379  -v $PWD/deployments/local/runtime/valkey/persistence:/bitnami/valkey/data bitnami/valkey:7.2.5
+```
+
+Connect CLI
+```shell
+docker run -it --rm \
+--network valkey \
+bitnami/valkey:latest valkey-cli -h valkey-server
+```
+
+
+```shell
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey
+```
+
+
+Get balance
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/readBalanceFunction/001' \
+  -H 'accept: application/json'
+```
+
+
+Open RabbitMQ Console -> Exchanges ->  payment
+
+```json
+{
+  "id": "001",
+  "amount": 30.00
+}
+```
+
+
+Get Balance
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/readBalanceFunction/001' \
+  -H 'accept: application/json'
+```
+
+- Kill account-balance-service
+- Restart account-balance-service
+
+```shell
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey
+```
+
+Get Balance
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/readBalanceFunction/001' \
+  -H 'accept: application/json'
+```
