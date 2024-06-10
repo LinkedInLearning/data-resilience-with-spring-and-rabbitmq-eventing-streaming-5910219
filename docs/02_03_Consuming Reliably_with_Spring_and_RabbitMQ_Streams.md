@@ -9,7 +9,13 @@ Start RabbitMQ with streams
 # Run Account Balance
 
 ```shell
-java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream 
+```
+
+# Run Payment App
+
+```shell
+java -jar applications/payment-service/target/payment-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app
 ```
 
 ------------------------------------------------
@@ -93,3 +99,22 @@ curl -X 'GET' \
   'http://localhost:8080/readBalanceFunction/001' \
   -H 'accept: application/json'
 ```
+
+
+
+Restart Account Balance
+
+```shell
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream
+```
+
+
+Get balance
+
+```shell
+curl -X 'GET' \
+  'http://localhost:8080/readBalanceFunction/001' \
+  -H 'accept: application/json'
+```
+
+
