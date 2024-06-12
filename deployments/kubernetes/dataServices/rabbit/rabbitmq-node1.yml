@@ -1,0 +1,20 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: RabbitmqCluster
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  image: bitnami/rabbitmq:3.13.2
+  service:
+    type: LoadBalancer
+  resources:
+    requests:
+      cpu: "0.5"
+      memory: "1Gi"
+    limits:
+      cpu: "0.5"
+      memory: "1Gi"
+  rabbitmq:
+    additionalPlugins:
+      - rabbitmq_stream_management
+      - rabbitmq_stream
