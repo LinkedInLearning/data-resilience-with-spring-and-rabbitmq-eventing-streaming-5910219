@@ -1,0 +1,1 @@
+helm install valkey --set replica.replicaCount=0 oci://registry-1.docker.io/bitnamicharts/valkey

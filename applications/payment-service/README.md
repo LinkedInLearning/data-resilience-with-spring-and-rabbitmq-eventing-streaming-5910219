@@ -1,5 +1,7 @@
 ## Builder Docker
 
+
+docker login
 ```shell
 mvn install
 cd applications/account-balance-service

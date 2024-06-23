@@ -28,3 +28,6 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 /deployments/cloud/secret/
 .sass-cache
+secret/
+secret
+/deployments/secret/GCP.md
