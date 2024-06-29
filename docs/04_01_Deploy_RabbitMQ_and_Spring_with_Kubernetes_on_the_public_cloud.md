@@ -161,3 +161,38 @@ curl -X 'POST' \
 ```shell
 curl -X 'GET' "http://$ACCT_HOST:8080/readBalanceFunction/001" -H 'accept: application/json'
 ```
+
+
+
+```shell
+helm uninstall valkey 
+```
+
+```shell
+curl -X 'POST' \
+  "http://$PAYMENT_HOST:8081/functions/makePaymentConsumer" \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "amount": 100
+}'
+```
+
+```shell
+curl -X 'GET' "http://$ACCT_HOST:8080/readBalanceFunction/001" -H 'accept: application/json'
+```
+
+
+```shell
+./deployments/kubernetes/dataServices/valKey/valKey.sh
+```
+
+
+```shell
+k delete pods  -l  name=account-balance-service
+```
+
+```shell
+curl -X 'GET' "http://$ACCT_HOST:8080/readBalanceFunction/001" -H 'accept: application/json'
+```
