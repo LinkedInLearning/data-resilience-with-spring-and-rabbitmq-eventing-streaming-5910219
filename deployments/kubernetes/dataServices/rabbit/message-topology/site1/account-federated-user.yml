@@ -1,0 +1,11 @@
+apiVersion: rabbitmq.com/v1beta1
+kind: User
+metadata:
+  name: account-federated-user
+spec:
+  tags:
+    - administrator
+  rabbitmqClusterReference:
+    name: rabbitmq
+  importCredentialsSecret:
+    name: account-federated-user-secret # name of the secret
