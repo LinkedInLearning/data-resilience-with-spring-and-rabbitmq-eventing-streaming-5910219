@@ -45,7 +45,7 @@ public class PaymentConsumer implements Consumer<Payment> {
 
       if(balanceOptional.isEmpty()){
           log.info("Previous balance NOT found for payment: {}",payment);
-          return Optional.of(new Balance(payment.id(), BigDecimal.ZERO,payment.timestamp()));
+          return Optional.of(new Balance(payment.id(), payment.amount(),payment.timestamp()));
       }
 
       var balance = balanceOptional.get();

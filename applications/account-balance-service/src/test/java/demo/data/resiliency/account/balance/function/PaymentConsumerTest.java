@@ -59,6 +59,17 @@ class PaymentConsumerTest {
         verify(repository).save(any(Balance.class));
     }
 
+    @DisplayName("Given no previous balance When calculateNewBalance Then amount equals payment")
+    @Test
+    void noPreviousBalance() {
+
+        var actual = subject.calculateNewBalance(payment);
+
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.get().amount()).isEqualTo(payment.amount());
+
+    }
+
     @DisplayName("Given 0 Balance When Payment Then Return Expected Amount")
     @Test
     void calculateNewBalance() {
