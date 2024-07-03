@@ -8,11 +8,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
  * @author Gregory Green
- * Spring Cloud Stream RabbitMQ consumer to recieve payments
+ * Spring Cloud Stream RabbitMQ consumer to process payments
  */
 @Component
 @RequiredArgsConstructor
@@ -27,7 +28,9 @@ public class PaymentConsumer implements Consumer<Payment> {
      */
     @Override
     public void accept(Payment payment) {
-        repository.save(calculateNewBalance(payment));
+
+        var balance = calculateNewBalance(payment);
+        balance.ifPresent(repository::save);
     }
 
     /**
@@ -35,13 +38,28 @@ public class PaymentConsumer implements Consumer<Payment> {
      * @param payment the current payment
      * @return the new calculated payment
      */
-    Balance calculateNewBalance(Payment payment) {
+    Optional<Balance> calculateNewBalance(Payment payment) {
       log.info("Received payment: {}",payment);
 
-      var balance = repository.findById(payment.id()).orElse(new Balance(payment.id(), BigDecimal.ZERO));
+      var balanceOptional = repository.findById(payment.id());
 
-        log.info("Currently previous: {}",balance);
+      if(balanceOptional.isEmpty()){
+          log.info("Previous balance NOT found for payment: {}",payment);
+          return Optional.of(new Balance(payment.id(), BigDecimal.ZERO,payment.timestamp()));
+      }
 
-      return new Balance(balance.id(),balance.amount().add(payment.amount()));
+      var balance = balanceOptional.get();
+
+        log.info("balance: {}",balance);
+        log.info("Checking if duplicate payment balance.lastPaymentTimestamp:{}, is after payment {}",
+                balance.lastPaymentTimestamp(),
+                payment.timestamp());
+
+        if(!balance.lastPaymentTimestamp().isBefore(payment.timestamp()))
+            return Optional.empty();
+        else
+            return Optional.of(new Balance(balance.id(),
+              balance.amount().add(payment.amount()), //add payment
+              balance.lastPaymentTimestamp()));
     }
 }

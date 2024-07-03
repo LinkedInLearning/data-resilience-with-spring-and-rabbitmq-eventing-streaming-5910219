@@ -13,5 +13,5 @@ import java.time.LocalDateTime;
  *           "Currency": "GBP"
  *         }
  */
-public record Payment(String id, BigDecimal amount) {
+public record Payment(String id, BigDecimal amount, LocalDateTime timestamp) {
 }

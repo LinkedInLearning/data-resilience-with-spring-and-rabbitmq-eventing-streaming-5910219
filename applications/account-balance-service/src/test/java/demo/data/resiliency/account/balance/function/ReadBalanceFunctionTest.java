@@ -45,7 +45,7 @@ class ReadBalanceFunctionTest {
     @DisplayName("Given account id not exist WHEN apply THEN return account with ZERO balance")
     @Test
     void apply_null() {
-        var expected = new Balance(accountId, BigDecimal.ZERO);
+        var expected = new Balance(accountId, BigDecimal.ZERO,null);
         when(repository.findById(anyString())).thenReturn(Optional.empty());
 
         subject = new ReadBalanceFunction(repository);

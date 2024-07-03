@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 class PaymentConsumerTest {
 
     private PaymentConsumer subject;
-    private final Payment payment = JavaBeanGeneratorCreator.of(Payment.class).create();
+    private  Payment payment;
 
     @Mock
     private BalanceRepository repository;
@@ -32,6 +33,8 @@ class PaymentConsumerTest {
 
     @BeforeEach
     void setUp() {
+
+        payment = JavaBeanGeneratorCreator.of(Payment.class).create();
         subject = new PaymentConsumer(repository);
     }
 
@@ -47,8 +50,10 @@ class PaymentConsumerTest {
     @Test
     void accept_when_Records_Exist() {
 
-        Balance balance = JavaBeanGeneratorCreator.of(Balance.class).create();
+        Balance balance = new Balance(this.payment.id(),BigDecimal.ZERO,this.payment.timestamp().minusSeconds(1));
+
         when(repository.findById(anyString())).thenReturn(Optional.of(balance));
+
         subject.accept(payment);
         verify(repository).findById(anyString());
         verify(repository).save(any(Balance.class));
@@ -60,13 +65,35 @@ class PaymentConsumerTest {
 
         BigDecimal expected = BigDecimal.TEN;
         String id = "calculateNewBalance";
-        Balance balance = new Balance(id,BigDecimal.ZERO);
-        var payment = new Payment(balance.id(),expected);
+        LocalDateTime expectedTimestamp = LocalDateTime.now();
+        Balance balance = new Balance(id,BigDecimal.ZERO,expectedTimestamp.minusSeconds(1));
+        var payment = new Payment(balance.id(),expected,expectedTimestamp);
 
         when(repository.findById(anyString())).thenReturn(Optional.of(balance));
 
         var actual = subject.calculateNewBalance(payment);
 
-        assertThat(actual.amount()).isEqualTo(expected);
+        assertThat(actual).isNotEmpty();
+        assertThat(actual.get().amount()).isEqualTo(expected);
+    }
+
+    @DisplayName("Given duplicate when accept then remains the same")
+    @Test
+    void duplicatePayment() {
+
+        Payment firstPayment = JavaBeanGeneratorCreator.of(Payment.class).create();
+
+        Balance firstBalance = new Balance(firstPayment.id(),BigDecimal.ZERO,firstPayment.timestamp().minusDays(1));
+        Balance secondBalance = new Balance(firstPayment.id(),BigDecimal.ZERO,firstPayment.timestamp());
+        when(repository.findById(anyString()))
+                .thenReturn(Optional.of(firstBalance))
+                .thenReturn(Optional.of(secondBalance));
+
+        var first = subject.calculateNewBalance(firstPayment);
+        assertThat(first).isNotEmpty();
+
+        var second = subject.calculateNewBalance(firstPayment);
+        assertThat(second).isEmpty();
+
     }
 }

@@ -16,6 +16,6 @@ public class ReadBalanceFunction implements Function<String, Balance> {
 
     @Override
     public Balance apply(String id) {
-        return repository.findById(id).orElse(new Balance(id, BigDecimal.ZERO));
+        return repository.findById(id).orElse(new Balance(id, BigDecimal.ZERO,null));
     }
 }

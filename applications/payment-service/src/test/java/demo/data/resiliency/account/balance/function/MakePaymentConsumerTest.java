@@ -11,9 +11,11 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class MakePaymentConsumerTest {
@@ -34,6 +36,8 @@ class MakePaymentConsumerTest {
 
         subject.accept(payment);
 
-        Mockito.verify(template).convertAndSend(anyString(),anyString(),any(Payment.class));
+        assertThat(payment.timestamp()).isNotNull();
+
+        verify(template).convertAndSend(anyString(),anyString(),any(Payment.class));
     }
 }

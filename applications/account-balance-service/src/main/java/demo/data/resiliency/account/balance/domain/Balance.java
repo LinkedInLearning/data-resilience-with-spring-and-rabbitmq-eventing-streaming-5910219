@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 /**
  *  "AccountId": "22289",
@@ -14,5 +15,5 @@ import java.math.BigDecimal;
  *           "Currency": "GBP"
  *         }
  */
-public record Balance(@Id  String id, BigDecimal amount){
+public record Balance(@Id  String id, BigDecimal amount, LocalDateTime lastPaymentTimestamp){
 }
