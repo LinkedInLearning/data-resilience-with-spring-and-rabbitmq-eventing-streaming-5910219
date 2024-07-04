@@ -5,6 +5,10 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.data.map.repository.config.EnableMapRepositories;
 import org.springframework.data.redis.repository.configuration.EnableRedisRepositories;
 
+/**
+ * Configuration for ValKey data management
+ * @author Gregory Green
+ */
 @Configuration
 @EnableRedisRepositories
 @Profile("valKey")

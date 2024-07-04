@@ -13,6 +13,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.rabbit.stream.listener.StreamListenerContainer;
 
+/**
+ * Configuration for using RabbitMQ streams
+ * @author Gregory Green
+ */
 @Configuration
 @Slf4j
 @Profile("stream")

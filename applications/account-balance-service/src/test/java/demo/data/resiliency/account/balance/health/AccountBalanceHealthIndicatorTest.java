@@ -15,9 +15,9 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class RabbitValKeyHealthIndicatorTest {
+class AccountBalanceHealthIndicatorTest {
 
-    private RabbitValKeyHealthIndicator subject;
+    private AccountBalanceHealthIndicator subject;
 
     @Mock
     private RedisTemplate<String,String> redisTemplate;
@@ -29,7 +29,7 @@ class RabbitValKeyHealthIndicatorTest {
 
     @BeforeEach
     void setUp() {
-        subject = new RabbitValKeyHealthIndicator(redisTemplate,key,value);
+        subject = new AccountBalanceHealthIndicator(redisTemplate,key,value);
     }
 
     @Test

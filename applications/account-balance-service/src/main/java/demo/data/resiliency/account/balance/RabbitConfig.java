@@ -11,6 +11,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.rabbit.stream.listener.StreamListenerContainer;
 
+/**
+ * Configuration for RabbitMQ
+ * @author Gregory Green
+ */
 @Configuration
 @Slf4j
 public class RabbitConfig {
