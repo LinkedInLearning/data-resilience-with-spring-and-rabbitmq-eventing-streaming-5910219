@@ -58,15 +58,13 @@ kubectl get pods -n rabbitmq-system -w
 ```
 
 
-
-
 ```shell
-kubectl create namespace resilency
+ kubectl create namespace resiliency
 ```
 
 
 ```shell
-kubectl config set-context --current --namespace=resilency
+kubectl config set-context --current --namespace=resiliency
 ```
 
 Install RabbitMQ
@@ -77,7 +75,7 @@ kubectl apply -f deployments/kubernetes/dataServices/rabbit/rabbitmq-node3.yml
 
 
 ```shell
-kubectl get pods -w
+kubectl get pods -w -o wide
 ```
 
 -------

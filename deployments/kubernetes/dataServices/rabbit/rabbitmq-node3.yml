@@ -4,6 +4,27 @@ metadata:
   name: rabbitmq
 spec:
   replicas: 3
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - mismatchLabelKeys:
+          labelSelector:
+              #  anti affinity rule to pods with name rabbitmq from running on the same pod
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: "In"
+                values:
+                  - rabbitmq
+          topologyKey: kubernetes.io/hostname
+#      requiredDuringSchedulingIgnoredDuringExecution:
+#        podAffinityTerm:
+#            labelSelector:
+#              matchExpressions:
+#                - key: "type"
+#                  operator: In
+#                  values:
+#                    - "app"
+#            topologyKey: kubernetes.io/hostname
   image: bitnami/rabbitmq:3.13.2
   service:
     type: LoadBalancer

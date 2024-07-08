@@ -12,6 +12,7 @@ ConfigDiskDir_locator1
 .jekyll-cache/
 .DS_Store
 .m2/
+secret/
 _site/
 runtime/
 Gemfile.lock
