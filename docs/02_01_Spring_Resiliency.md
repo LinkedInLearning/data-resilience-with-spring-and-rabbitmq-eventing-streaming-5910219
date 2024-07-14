@@ -86,3 +86,7 @@ curl -X 'GET' \
   'http://localhost:8080/readBalanceFunction/001' \
   -H 'accept: application/json'
 ```
+
+```shell
+git checkout 02_01_valKey
+```
