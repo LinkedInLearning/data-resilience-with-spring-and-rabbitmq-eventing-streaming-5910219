@@ -1,5 +1,7 @@
 # Single RabbitMQ Cluster
 
+
+
 ```shell
 mkdir -p $PWD/deployments/local/runtime/rabbitmq/persistence
 docker run -v $PWD/deployments/local/runtime/rabbitmq/persistence:/bitnami/rabbitmq/mnesia -d --name rabbitmq-server -p 15672:15672 -p 5672:5672 -e RABBITMQ_USERNAME=app -e RABBITMQ_PASSWORD=app -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true  bitnami/rabbitmq:latest
@@ -21,6 +23,12 @@ open http://localhost:15672
 
 ------------------------------------------------
 # Run Account Balance App
+
+Build application
+```shell
+mvn clean package
+```
+
 
 ```shell
 java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app
