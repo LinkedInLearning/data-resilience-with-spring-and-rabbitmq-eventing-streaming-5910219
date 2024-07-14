@@ -84,6 +84,7 @@ curl -X 'GET' \
 
 ```shell
 mkdir -p $PWD/deployments/local/runtime/valkey/persistence
+rm -rf PWD/deployments/local/runtime/valkey/persistence
 ```
 
 ```shell
@@ -103,6 +104,7 @@ bitnami/valkey:latest valkey-cli -h valkey-server
 
 
 ```shell
+mvn clean package
 java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey
 ```
 
