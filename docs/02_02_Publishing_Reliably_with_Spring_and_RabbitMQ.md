@@ -5,6 +5,7 @@
 # Run Payment App
 
 ```shell
+mvn clean package
 java -jar applications/payment-service/target/payment-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app
 ```
 
@@ -52,7 +53,18 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 30
+  "amount": 50
+}'
+```
+
+```shell
+curl -X 'POST' \
+  'http://localhost:8081/functions/makePaymentConsumer' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "amount": 50
 }'
 ```
 
