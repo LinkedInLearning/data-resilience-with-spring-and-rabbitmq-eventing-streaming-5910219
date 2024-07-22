@@ -3,13 +3,9 @@
 
 
 ```shell
-mkdir -p $PWD/deployments/local/runtime/rabbitmq/persistence
-docker run -v $PWD/deployments/local/runtime/rabbitmq/persistence:/bitnami/rabbitmq/mnesia -d --name rabbitmq-server -p 15672:15672 -p 5672:5672 -e RABBITMQ_USERNAME=app -e RABBITMQ_PASSWORD=app -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true  bitnami/rabbitmq:latest
-```
-
-
-```shell
-docker logs rabbitmq-server
+rm -rf $PWD/deployments/local/runtime/rabbitmq/persistence
+mkdir $PWD/deployments/local/runtime/rabbitmq/persistence
+docker run --rm  -v $PWD/deployments/local/runtime/rabbitmq/persistence:/bitnami/rabbitmq/mnesia --name rabbitmq-server -p 15672:15672 -p 5672:5672 -e RABBITMQ_USERNAME=app -e RABBITMQ_PASSWORD=app -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true  bitnami/rabbitmq:latest
 ```
 
 Open Management
@@ -21,8 +17,13 @@ Login user: app password:app
 open http://localhost:15672
 ```
 
+Confirm empty
+
 ------------------------------------------------
 # Run Account Balance App
+
+
+payment and read balance function
 
 Build application
 ```shell
