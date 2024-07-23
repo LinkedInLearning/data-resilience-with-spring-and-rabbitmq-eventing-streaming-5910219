@@ -8,6 +8,14 @@ Setup
 rm -rf $PWD/deployments/local/runtime/rabbitmq/persistence
 docker network rm valkey
 ```
+--------
+
+
+
+
+
+
+START DEMO
 
 ```shell
 mkdir -p $PWD/deployments/local/runtime/rabbitmq/persistence
