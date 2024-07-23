@@ -5,17 +5,6 @@ spring:
     function:
       definition: readBalanceFunction;paymentConsumer
     stream:
-      http:
-        GET: readBalanceFunction
-        POST: paymentConsumer
-      rabbit:
-        default:
-          requiredGroups: true
-          dlqQuorum:
-            enabled:  true
-          quorum.enabled: true
-          autoBindDlq: true
-          prefetch: 10000
       bindings:
         readBalanceFunction-in-0:
           destination: readBalance
@@ -23,7 +12,18 @@ spring:
         readBalanceFunction-out-0:
           destination: balance
         paymentConsumer-in-0:
-          destination: payment
-          group: ${spring.application.name}
+         destination: payment
+         group: ${spring.application.name}
+      http:
+        GET: readBalanceFunction
+        POST: paymentConsumer
+      rabbit:
+        bindings:
+          paymentConsumer-in-0:
+            consumer:
+              quorum.enabled: true
+          readBalanceFunction-in-0:
+            consumer:
+              quorum.enabled: true
       binder:
         connection-name-prefix: "account-balance"

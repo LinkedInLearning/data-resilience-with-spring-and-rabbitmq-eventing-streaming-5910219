@@ -44,7 +44,7 @@ docker run --rm -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --network valke
 
 ```shell
 mvn clean package
-java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --pring.rabbitmq.host=localhost --spring.rabbitmq.port=5672 --spring.data.redis.host=localhost --spring.data.redis.port=6379
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.rabbitmq.host=localhost --spring.rabbitmq.port=5672 --spring.data.redis.host=localhost --spring.data.redis.port=6379
 ```
 
 Open Rabbitmq management
