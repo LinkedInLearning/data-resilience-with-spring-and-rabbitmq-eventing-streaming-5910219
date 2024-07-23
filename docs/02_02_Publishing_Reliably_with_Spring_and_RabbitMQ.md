@@ -9,6 +9,18 @@ mvn clean package
 java -jar applications/payment-service/target/payment-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app
 ```
 
+Open Console
+
+```shell
+open http://localhost:15672
+```
+
+Review 
+- Connections
+- Channels
+- Exchange
+- Queues
+
 ------------------------------------------------
 ## DEMO - Make Payment with Publisher App 
 

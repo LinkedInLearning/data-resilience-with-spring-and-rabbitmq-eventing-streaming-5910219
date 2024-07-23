@@ -7,6 +7,5 @@ import org.springframework.data.redis.repository.configuration.EnableRedisReposi
 
 @Configuration
 @EnableRedisRepositories
-@Profile("valKey")
 public class ValKeyRepositoryConfig {
 }
