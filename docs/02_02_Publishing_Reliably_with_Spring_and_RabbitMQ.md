@@ -5,22 +5,9 @@
 # Run Payment App
 
 ```shell
-mvn clean package
+mvn package
 java -jar applications/payment-service/target/payment-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app
 ```
-
-Open Console
-
-```shell
-open http://localhost:15672
-```
-
-Review 
-- Connections
-- Channels
-- Exchange
-- Queues
-
 ------------------------------------------------
 ## DEMO - Make Payment with Publisher App 
 
@@ -34,7 +21,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 30
+  "amount": 1000
 }'
 ```
 
@@ -43,6 +30,18 @@ Open Console
 ```shell
 open http://localhost:15672
 ```
+
+Open Console
+
+```shell
+open http://localhost:15672
+```
+
+Review
+- Connections
+- Channels
+- Exchange
+- Queues
 
 
 Get balance
@@ -55,7 +54,6 @@ curl -X 'GET' \
 
 Kill Account Balance
 
-
 Make Payment
 
 ```shell
@@ -65,7 +63,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 50
+  "amount": 1000
 }'
 ```
 
@@ -76,7 +74,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 50
+  "amount": 1000
 }'
 ```
 
