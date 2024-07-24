@@ -1,12 +1,6 @@
 
 # Start Minikube
 
-Install Minikube
-```shell
-curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin-arm64
-sudo install minikube-darwin-arm64 /usr/local/bin/minikube
-```
-
 Start Minikube
 
 ```shell
@@ -19,7 +13,6 @@ minikube tunnel
 ```
 
 # Install RabbitMQ
-
 
 Install RabbitMQ Cluster Operator
 
@@ -39,7 +32,6 @@ kubectl get pods -n rabbitmq-system
 ```shell
 kubectl create namespace resilency
 ```
-
 
 ```shell
 kubectl config set-context --current --namespace=resilency
@@ -79,11 +71,11 @@ kubectl get statefulsets
 kubectl get pods
 ```
 
+SHOW DIAGRAM
+
 ```shell
 kubectl delete pod rabbitmq-server-0
 ```
-
-
 
 ```shell
 open http://127.0.0.1:15672
@@ -99,9 +91,13 @@ Delete RabbitMQ
 kubectl delete -f deployments/kubernetes/dataServices/rabbit/rabbitmq-node1.yml
 ```
 
+
 ------------
 
 # RabbitMQ Cluster
+
+
+SHOW DIAGRAM
 
 ```shell
 kubectl apply -f deployments/kubernetes/dataServices/rabbit/rabbitmq-node3.yml
