@@ -30,11 +30,11 @@ kubectl get pods -n rabbitmq-system
 
 
 ```shell
-kubectl create namespace resilency
+kubectl create namespace resiliency
 ```
 
 ```shell
-kubectl config set-context --current --namespace=resilency
+kubectl config set-context --current --namespace=resiliency
 ```
 
 Install RabbitMQ
@@ -57,6 +57,9 @@ kubectl get services
 open http://127.0.0.1:15672
 ```
 
+USER: default_user__s14uWKXPz614-ajLJb
+PASWORD: RAZZdnDuGf719TbdEZkoKbK3GNyPlhFP
+
 
 ```shell
 ./deployments/kubernetes/dataServices/rabbit/scripts/get-credentials.sh
@@ -73,6 +76,14 @@ kubectl get pods
 
 SHOW DIAGRAM
 
+
+Install k9
+
+```shell
+brew install derailed/k9s/k9s
+```
+
+
 ```shell
 kubectl delete pod rabbitmq-server-0
 ```
@@ -81,9 +92,7 @@ kubectl delete pod rabbitmq-server-0
 open http://127.0.0.1:15672
 ```
 
-```shell
-kubectl get pods -w
-```
+Show pods in k9s
 
 Delete RabbitMQ
 
@@ -104,15 +113,15 @@ kubectl apply -f deployments/kubernetes/dataServices/rabbit/rabbitmq-node3.yml
 ```
 
 
-
-```shell
-kubectl get pods -w
-```
+Show PODS in k9s
 
 ```shell
 ./deployments/kubernetes/dataServices/rabbit/scripts/get-credentials.sh
 ```
 
+
+USER: default_user_4DqcHO9GN0qKhq5DGh0
+PASWORD: vsjxPWD3VAXzz95lWd1ZneEZeIv40lO0
 
 
 ```shell
@@ -127,6 +136,8 @@ kubectl get pods
 
 ```shell
 kubectl delete pod rabbitmq-server-0
+kubectl delete pod rabbitmq-server-1
+kubectl delete pod rabbitmq-server-2
 ```
 
 ```shell
