@@ -1,12 +1,38 @@
 # Single RabbitMQ Cluster
 
+Setup
+
+```shell
+rm -rf $PWD/deployments/local/runtime/rabbitmq/persistence
+```
+
+----
+
 Start RabbitMQ with streams
 ```shell
-./deployments/docker/rabbit/start-rabbit-w-streams.sh
+docker run --rm -v $PWD/deployments/local/runtime/rabbitmq/persistence:/bitnami/rabbitmq/mnesia  --name rabbitmq-server --rm  -p 5552:5552  -p 15672:15672 -p 5672:5672 -e RABBITMQ_USERNAME=app  -e RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS='-rabbitmq_stream advertised_host localhost' -e RABBITMQ_PASSWORD=app -e RABBITMQ_MANAGEMENT_ALLOW_WEB_ACCESS=true  bitnami/rabbitmq:latest
+```
+
+
+```shell
+docker exec rabbitmq-server rabbitmq-plugins enable rabbitmq_stream
+docker exec rabbitmq-server rabbitmq-plugins enable rabbitmq_management
+docker exec rabbitmq-server rabbitmqctl enable_feature_flag all
+```
+
+Start ValKey
+
+```shell
+docker run --rm -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --network valkey -p 6379:6379   bitnami/valkey:7.2.5
+
 ```
 
 ------------------------------------------------
 # Run Account Balance
+
+```shell
+mvn clean package
+```
 
 ```shell
 java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream 
@@ -31,7 +57,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 30
+  "amount": 500
 }'
 ```
 
@@ -50,9 +76,6 @@ curl -X 'GET' \
   -H 'accept: application/json'
 ```
 
-Kill Account Balance
-
-
 Make Payment
 
 ```shell
@@ -62,23 +85,37 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 30
+  "amount": 1000
 }'
 ```
 
-Run Account Balance
-
 ```shell
-java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey
+curl -X 'POST' \
+  'http://localhost:8081/functions/makePaymentConsumer' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "amount": 1000
+}'
 ```
-
-Get balance
+```shell
+curl -X 'POST' \
+  'http://localhost:8081/functions/makePaymentConsumer' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "amount": 1000
+}'
+```
 
 ```shell
 curl -X 'GET' \
   'http://localhost:8080/readBalanceFunction/001' \
   -H 'accept: application/json'
 ```
+
 
 Kill ValKey
 
@@ -89,25 +126,14 @@ docker rm -f valkey-server
 Restart ValKey (without persistence)
 
 ```shell
-./deployments/docker/valkey/start-val-key-no-persistence.sh
+docker run --rm -e ALLOW_EMPTY_PASSWORD=yes --name valkey-server --network valkey -p 6379:6379   bitnami/valkey:7.2.5
 ```
-
-Get balance
-
-```shell
-curl -X 'GET' \
-  'http://localhost:8080/readBalanceFunction/001' \
-  -H 'accept: application/json'
-```
-
-
 
 Restart Account Balance
 
 ```shell
-java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream
+java -jar applications/account-balance-service/target/account-balance-service-0.0.1-SNAPSHOT.jar --spring.rabbitmq.username=app --spring.rabbitmq.password=app --spring.profiles.active=valKey,stream 
 ```
-
 
 Get balance
 
@@ -116,5 +142,4 @@ curl -X 'GET' \
   'http://localhost:8080/readBalanceFunction/001' \
   -H 'accept: application/json'
 ```
-
 

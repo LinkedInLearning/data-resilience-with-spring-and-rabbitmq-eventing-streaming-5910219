@@ -7,6 +7,11 @@ curl -LO https://storage.googleapis.com/minikube/releases/latest/minikube-darwin
 sudo install minikube-darwin-arm64 /usr/local/bin/minikube
 ```
 
+
+```shell
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+```
+
 Start Minikube
 
 ```shell
@@ -17,7 +22,31 @@ Start Tunnel
 ```shell
 minikube tunnel
 ```
+```shell
+kubectl get nodes
+```
 
+```shell
+kubectl describe  node <name>
+```
+
+```shell
+kubectl get namespaces
+```
+
+```shell
+kubectl get pod
+```
+
+```shell
+kubectl get deployment
+```
+
+```shell
+kubectl get services
+```
+
+-------
 # Install RabbitMQ
 
 
