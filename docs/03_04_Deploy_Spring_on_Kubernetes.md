@@ -1,6 +1,17 @@
 
 # Pre-requisite
 
+
+```shell
+  curl -X 'GET' 'http://127.0.0.1:8080/readBalanceFunction/001' -H 'accept: application/json'
+  kubectl delete -f deployments/kubernetes/apps/payment-service/payment-service.yml
+  kubectl delete -f deployments/kubernetes/apps/account-balance-service/account-balance-service.yml
+  kubectl get pods
+  kubectl delete RabbitMQCluster rabbitmq
+  helm uninstall valkey
+  kubectl delete pvc valkey-data-valkey-master-0  valkey-data-valkey-replicas-0  valkey-data-valkey-replicas-1 valkey-data-valkey-replicas-2
+```
+
 - Install/Start Minikube 
 - Install RabbitMQ Cluster Operator
 
@@ -64,18 +75,8 @@ kubectl get statefulsets
 Install Helm
 
 ```shell
-./deployments/kubernetes/dataServices/valKey/helm-install.sh
+helm install valkey --set replica.replicaCount=0 oci://registry-1.docker.io/bitnamicharts/valkey
 ```
-
-
-```shell
-helm install valkey oci://registry-1.docker.io/bitnamicharts/valkey
-```
-
-```shell
-./deployments/kubernetes/dataServices/valKey/valKey.sh
-```
-
 
 
 ```shell
@@ -97,11 +98,6 @@ open http://127.0.0.1:15672
 kubectl get pods
 ```
 
-
-```shell
-kubectl delete pod rabbitmq-server-0
-```
-
 ```shell
 open http://127.0.0.1:15672
 ```
@@ -117,8 +113,12 @@ kubectl get pods -w
 mvn install
 cd applications/account-balance-service
 mvn spring-boot:build-image
+
+docker images
+
 docker login
 docker tag account-balance-service:0.0.1-SNAPSHOT cloudnativedata/account-balance-service:0.0.1-SNAPSHOT 
+
 docker push cloudnativedata/account-balance-service:0.0.1-SNAPSHOT
 ```
 
@@ -132,18 +132,6 @@ kubectl get pods -w
 ```
 
 
-Connect CLI
-```shell
-
-
-echo VALKEY_PASSWORD=`kubectl get secrets/valkey -o jsonpath='{.data.*}' | base64 -d`
-
-kubectl exec -it valkey-master-0 -- valkey-cli
-```
-
-```shell
-auth your_current_valkey_password
-```
 
 # Deploy Payment App
 
@@ -156,7 +144,7 @@ docker tag payment-service:0.0.1-SNAPSHOT cloudnativedata/payment-service:0.0.1-
 docker push cloudnativedata/payment-service:0.0.1-SNAPSHOT
 ```
 
-
+cd ../..
 ```shell
 kubectl apply -f deployments/kubernetes/apps/payment-service/payment-service.yml
 ```
@@ -170,22 +158,6 @@ kubectl get pods -w
 kubectl get services
 ```
 
-```shell
-export PAYMENT_SERVICE_HOST=`kubectl get services payment-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
-```
-
-
-```shell
-curl -X 'POST' \
-  'http://127.0.0.1:8081/functions/makePaymentConsumer' \
-  -H 'accept: */*' \
-  -H 'Content-Type: application/json' \
-  -d '{
-  "id": "001",
-  "amount": 100
-}'
-```
-
 
 Read Balance
 
@@ -194,19 +166,36 @@ Read Balance
 curl -X 'GET' 'http://127.0.0.1:8080/readBalanceFunction/001' -H 'accept: application/json'
 ```
 
-```shell
-k get pods
-```
 
 ```shell
-k delete pod account-balance-service-5cfc4c9c6f-wjw9p
 curl -X 'POST' \
   'http://127.0.0.1:8081/functions/makePaymentConsumer' \
   -H 'accept: */*' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 100
+  "amount": 1000
+}'
+```
+
+```shell
+curl -X 'GET' 'http://127.0.0.1:8080/readBalanceFunction/001' -H 'accept: application/json'
+```
+
+
+```shell
+k get pods
+```
+
+```shell
+k delete pod -l name=account-balance-service
+curl -X 'POST' \
+  'http://127.0.0.1:8081/functions/makePaymentConsumer' \
+  -H 'accept: */*' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "id": "001",
+  "amount": 1000
 }'
 ```
 
@@ -240,7 +229,7 @@ curl -X 'GET' 'http://127.0.0.1:8080/readBalanceFunction/001' -H 'accept: applic
 
 
 ```shell
-k delete pod rabbitmq-server-0
+kubectl  delete pod rabbitmq-server-0
 ```
 
 ```shell
@@ -250,7 +239,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "id": "001",
-  "amount": 100
+  "amount": 1000
 }'
 ```
 
@@ -387,8 +376,25 @@ curl -X 'GET' 'http://127.0.0.1:8080/readBalanceFunction/001' -H 'accept: applic
 
 ---------------
 
+```shell
+export PAYMENT_SERVICE_HOST=`kubectl get services payment-service --output jsonpath='{.status.loadBalancer.ingress[0].ip}'`
+```
 
 
 ```shell
 CLIENT LIST
+```
+
+
+Connect CLI
+```shell
+
+
+echo VALKEY_PASSWORD=`kubectl get secrets/valkey -o jsonpath='{.data.*}' | base64 -d`
+
+kubectl exec -it valkey-master-0 -- valkey-cli
+```
+
+```shell
+auth your_current_valkey_password
 ```
