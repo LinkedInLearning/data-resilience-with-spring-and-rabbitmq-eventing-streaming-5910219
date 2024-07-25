@@ -1,4 +1,9 @@
 ## Builder Docker
+Actuator
+
+```shell
+curl http://localhost:8080/actuator/health
+```
 
 ```shell
 #mvn install
