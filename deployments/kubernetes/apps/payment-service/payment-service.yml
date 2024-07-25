@@ -1,21 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  labels:
-    run:  payment-service
-  name:  payment-service
+  name: payment-service
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
-      name:  payment-service
+      app: payment-service
   template:
     metadata:
       labels:
-        name:  payment-service
+        app: payment-service
     spec:
       containers:
-        - env:
+        - name: payment-service
+          image: cloudnativedata/payment-service:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+          env:
             - name: spring.application.name
               value: payment-service
             - name: server.port
@@ -32,21 +34,24 @@ spec:
                 secretKeyRef:
                   name: rabbitmq-default-user
                   key: password
-            - name: spring.profiles.active
-              value: "valKey"
-            - name: spring.data.redis.host
-              value: "valkey-master"
-            - name: spring.data.redis.password
-              valueFrom:
-                secretKeyRef:
-                  name: valkey
-                  key: valkey-password
-            - name: spring.data.redis.client-name
-              value: "payment-service"
-          image: cloudnativedata/payment-service:0.0.1-SNAPSHOT
-          name: payment-service
-#          imagePullPolicy: Always
-          imagePullPolicy: IfNotPresent
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8080
+            # initialDelaySeconds wait to do first probe
+            initialDelaySeconds: 90
+            # periodSeconds a liveness probe executes
+            periodSeconds: 10
+            timeoutSeconds: 10
 ---
 apiVersion: v1
 kind: Service
