@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: payment-service
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: payment-service
@@ -15,8 +15,10 @@ spec:
       containers:
         - name: payment-service
           image: cloudnativedata/payment-service:0.0.1-SNAPSHOT
+          imagePullPolicy: "Always"
+          #          imagePullPolicy: "IfNotPresent"
           ports:
-            - containerPort: 8080
+            - containerPort: 8081
           env:
             - name: spring.application.name
               value: payment-service
@@ -37,7 +39,7 @@ spec:
           readinessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: 8081
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 1
@@ -46,7 +48,7 @@ spec:
           livenessProbe:
             httpGet:
               path: /actuator/health
-              port: 8080
+              port: 8081
             # initialDelaySeconds wait to do first probe
             initialDelaySeconds: 90
             # periodSeconds a liveness probe executes
@@ -59,7 +61,7 @@ metadata:
   name: payment-service
 spec:
   selector:
-    name: payment-service
+    app: payment-service
   ports:
     - protocol: TCP
       port: 8081

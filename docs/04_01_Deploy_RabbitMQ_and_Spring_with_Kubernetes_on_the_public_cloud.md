@@ -41,6 +41,9 @@ gcloud components install gke-gcloud-auth-plugin
 
 Connect
 
+```shell
+kubectl delete namespace resiliency
+```
 --------------------------------------------
 # Deployment Rabbit
 
@@ -54,7 +57,7 @@ kubectl apply -f "https://github.com/rabbitmq/cluster-operator/releases/latest/d
 Get Pods
 
 ```shell
-kubectl get pods -n rabbitmq-system -w
+kubectl get pods -n rabbitmq-system
 ```
 
 
