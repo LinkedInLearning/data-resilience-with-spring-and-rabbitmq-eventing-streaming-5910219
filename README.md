@@ -1,6 +1,10 @@
 # Data Resilience with Spring and RabbitMQ Eventing Streaming
 This is the repository for the LinkedIn Learning course `Data Resilience with Spring and RabbitMQ Eventing Streaming`. The full course is available from [LinkedIn Learning][lil-course-url].
 
+![lil-thumbnail-url]
+
+RabbitMQ is a widely deployed messaging solution and Spring is a popular framework for building modern Java applications. In this course, Gregory Green explains how Spring and RabbitMQ can be used to build a resilient data architecture for critical applications. Learn about RabbitMQ features such as quorum queues, streams, and multi-site replication. Gregory also reviews Spring projects like Spring Cloud and AMQP that simplify building production-ready applications. Plus, learn how Kubernetes improves resiliency for Spring applications and RabbitMQ.
+
 _See the readme file in the main branch for updated instructions and information._
 ## Instructions
 This repository has branches for each of the videos in the course. You can use the branch pop up menu in github to switch to a specific branch and take a look at the course at that stage, or you can add `/tree/BRANCH_NAME` to the URL to go to the branch you want to access.
@@ -20,15 +24,9 @@ To resolve this issue:
     Add changes to git using this command: git add .
 	Commit changes using this command: git commit -m "some message"
 
-## Installing
-1. To use these exercise files, you must have the following installed:
-	- [list of requirements for course]
-2. Clone this repository into your local machine using the terminal (Mac), CMD (Windows), or a GUI tool like SourceTree.
-3. [Course-specific instructions]
-
 
 [0]: # (Replace these placeholder URLs with actual course URLs)
 
-[lil-course-url]: https://www.linkedin.com/learning/
-[lil-thumbnail-url]: http://
+[lil-course-url]: https://www.linkedin.com/learning/data-resilience-with-spring-and-rabbitmq-event-streaming
+[lil-thumbnail-url]: https://media.licdn.com/dms/image/v2/D4E0DAQGcf2HhlwJPxg/learning-public-crop_675_1200/learning-public-crop_675_1200/0/1724448476620?e=2147483647&v=beta&t=0kijKM2zFiq9PtkHrG2Dee-6Ayx5xGwJZYvkHas5zoE
 
